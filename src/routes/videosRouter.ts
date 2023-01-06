@@ -31,7 +31,7 @@ let videosCatalog: videosCatalogType = [
 
 export const videosRouter = Router()
 let errorsMessages: Array<any> = []
-const VideosValidation = (
+const updateVideosValidation = (
     title: string,
     author: string,
     availableResolutions: Array<string>,
@@ -87,7 +87,7 @@ const VideosValidation = (
     }
     return
 }
-const VideosValidation2 = (
+const updateVideosValidation2 = (
     author: string,
     availableResolutions: Array<string>,
     canBeDownloaded?: boolean,
@@ -133,6 +133,62 @@ const VideosValidation2 = (
     }
     return
 }
+const createVideosValidation = (
+    title: string,
+    author: string,
+    availableResolutions: Array<string>
+) => {
+    if (title.length > 40
+        || !title
+        || typeof title !== 'string'
+    ) {
+        errorsMessages.push({
+            "message": "Incorrect title",
+            "field": "title"
+        })
+    }
+    if (author.length > 20
+        || !author
+        || typeof author !== 'string'
+    ) {
+        errorsMessages.push({
+            "message": "Incorrect author",
+            "field": "author"
+        })
+    }
+    if (availableResolutions.length > availableResolutionsArray.length
+        || availableResolutions.filter(resol => availableResolutionsArray.indexOf(resol) < 0).length > 0) {
+        errorsMessages.push({
+            "message": "Incorrect availableResolutions",
+            "field": "availableResolutions"
+        })
+
+    }
+    return
+}
+const createVideosValidation2 = (
+    author: string,
+    availableResolutions: Array<string>,
+) => {
+    if (author.length > 20
+        || !author
+        || typeof author !== 'string'
+    ) {
+        errorsMessages.push({
+            "message": "Incorrect author",
+            "field": "author"
+        })
+    }
+    if (availableResolutions.length > availableResolutionsArray.length
+        || availableResolutions.filter(resol => availableResolutionsArray.indexOf(resol) < 0).length > 0) {
+        errorsMessages.push({
+            "message": "Incorrect availableResolutions",
+            "field": "availableResolutions"
+        })
+
+    }
+    return
+}
 
     videosRouter.get('/', (req: Request, res: Response) => {
         res.status(200).send(videosCatalog)
@@ -147,10 +203,10 @@ const VideosValidation2 = (
                 "message": "Incorrect title",
                 "field": "title"
             })
-            VideosValidation2(author, availableResolutions)
+            createVideosValidation2(author, availableResolutions)
             return res.status(400).send({errorsMessages})
         }
-        VideosValidation(title, author, availableResolutions)
+        createVideosValidation(title, author, availableResolutions)
 
         if (errorsMessages.length > 0) {
             return res.status(400).send({errorsMessages})
@@ -190,10 +246,10 @@ const VideosValidation2 = (
                 "message": "Incorrect title",
                 "field": "title"
             })
-            VideosValidation2(author, availableResolutions)
+            updateVideosValidation2(author, availableResolutions)
             return res.status(400).send({errorsMessages})
         }
-        VideosValidation(title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
+        updateVideosValidation(title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
         if (errorsMessages.length > 0) {
             return res.status(400).send({errorsMessages})
         }
