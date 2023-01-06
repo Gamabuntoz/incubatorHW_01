@@ -36,6 +36,7 @@ const createVideoValidation = (title: string, author: string, availableResolutio
     if (title.length > 40
         || !title
         || typeof title !== 'string'
+        || title === null
     ) {
         errorsMessages.push({
             "message": "Incorrect title",
