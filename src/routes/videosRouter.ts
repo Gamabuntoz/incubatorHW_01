@@ -81,6 +81,7 @@ videosRouter.put('/:id', (req: Request, res: Response) =>  {
                         }
                     ]
                 })
+            return
         }
     }
     if (req.body.minAgeRestriction) {
@@ -95,7 +96,7 @@ videosRouter.put('/:id', (req: Request, res: Response) =>  {
                     }
                 ]
             })
-
+            return
         }
     }
     if (req.body.publicationDate) {
@@ -109,7 +110,7 @@ videosRouter.put('/:id', (req: Request, res: Response) =>  {
                         }
                     ]
                 })
-
+            return
         }
     }
     if (req.body.title.length > 40
