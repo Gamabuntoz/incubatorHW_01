@@ -131,7 +131,7 @@ const VideosValidation2 = (
             "field": "publicationDate"
         })
     }
-    return errorsMessages
+    return
 }
 
     videosRouter.get('/', (req: Request, res: Response) => {
