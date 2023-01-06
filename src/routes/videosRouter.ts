@@ -246,7 +246,7 @@ const createVideosValidation2 = (
                 "message": "Incorrect title",
                 "field": "title"
             })
-            updateVideosValidation2(author, availableResolutions)
+            updateVideosValidation2(author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
             return res.status(400).send({errorsMessages})
         }
         updateVideosValidation(title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
