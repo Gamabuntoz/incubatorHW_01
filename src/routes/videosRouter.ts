@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 
-enum availableResolutionsEnum {P144, P240, P360, P480, P720, P1080, P1440, P2165}
+enum availableResolutionsEnum {P144, P240, P360, P480, P720, P1080, P1440, P2160}
 
 type videosCatalogType = Array<videosTypes>
 type videosTypes = {
@@ -13,7 +13,7 @@ type videosTypes = {
     publicationDate: string
     availableResolutions: availableResolutionsEnum[]
 }
-const availableResolutionsArray: Array<string> = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2165']
+const availableResolutionsArray: Array<string> = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
 let videosCatalog: videosCatalogType = [
     {
         id: 1,
