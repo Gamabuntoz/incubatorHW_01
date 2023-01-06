@@ -130,7 +130,7 @@ videosRouter.put('/:id', (req: Request, res: Response) =>  {
         })
         return
     }
-    let video = videosCatalog.find(p => p.id === +req.params.productId)
+    let video = videosCatalog.find(v => v.id === +req.params.id)
     if (video) {
         video.title = req.body.title
         video.author = req.body.author
@@ -146,7 +146,6 @@ videosRouter.put('/:id', (req: Request, res: Response) =>  {
         if (req.body.availableResolutions) {
             video.availableResolutions = req.body.availableResolutions
         }
-        //const newTest = [...test, ...req.body.avalibele]
         res.status(204)
     } else {
         res.send(404)
