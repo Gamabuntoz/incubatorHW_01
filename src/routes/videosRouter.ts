@@ -36,7 +36,6 @@ const createVideoValidation = (title: string, author: string, availableResolutio
     if (title.length > 40
         || !title
         || typeof title !== 'string'
-        || title === null
     ) {
         errorsMessages.push({
             "message": "Incorrect title",
@@ -125,6 +124,17 @@ const updateVideValidation = (
     })
     videosRouter.post('/', (req: Request, res: Response) => {
         const title = req.body.title
+        if (title === null) {
+            return res.status(400).send({
+                errorsMessages: [
+                    {
+                        "message": "Incorrect",
+                        "field": "title"
+                    }
+                ]
+            })
+        }
+
         const author = req.body.author
         const availableResolutions = req.body.availableResolutions
         const errors = createVideoValidation(title, author, availableResolutions)
@@ -154,6 +164,16 @@ const updateVideValidation = (
     })
     videosRouter.put('/:id', (req: Request, res: Response) => {
         const title = req.body.title
+        if (title === null) {
+            return res.status(400).send({
+                errorsMessages: [
+                    {
+                        "message": "Incorrect",
+                        "field": "title"
+                    }
+                ]
+            })
+        }
         const author = req.body.author
         const availableResolutions = req.body.availableResolutions
         const canBeDownloaded = req.body.canBeDownloaded
