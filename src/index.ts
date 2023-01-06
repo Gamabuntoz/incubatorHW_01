@@ -1,12 +1,11 @@
 import express, {Request, Response} from'express'
+import bodyParser from 'body-parser'
+import {videosRouter} from "./routes/videosRouter";
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
+const parserMiddleware = bodyParser({})
+app.use(parserMiddleware)
 
-app.get('/', (req: Request, res: Response) => {
-    const helloMessage = 'Hellooooooo!';
-    res.send(helloMessage)
-})
+app.use('/videos', videosRouter)
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+app.listen(port, () => {console.log('server start')})
