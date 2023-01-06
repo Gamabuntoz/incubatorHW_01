@@ -8,4 +8,4 @@ app.use(parserMiddleware)
 
 app.use('/videos', videosRouter)
 
-app.listen(port, () => {console.log('server start')})
+app.listen(port)
