@@ -21,7 +21,7 @@ let videosCatalog: videosCatalogType = [
         author: 'Pushkin',
         // default (by tests) false
         canBeDownloaded: false,
-        // default (by tests) nul
+        // default (by tests) null
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
         publicationDate: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
@@ -71,9 +71,9 @@ const updateVideosValidation = (
             "field": "canBeDownloaded"
         })
     }
-    if (typeof minAgeRestriction !== 'number'
-        || minAgeRestriction < 1
-        || minAgeRestriction > 18) {
+    if (minAgeRestriction && typeof minAgeRestriction !== 'number'
+        || (typeof minAgeRestriction === 'number' && minAgeRestriction < 1
+            || typeof minAgeRestriction === 'number' && minAgeRestriction > 18)) {
         errorsMessages.push({
             "message": "Incorrect minAgeRestriction",
             "field": "minAgeRestriction"
@@ -118,8 +118,8 @@ const updateVideosValidation2 = (
         })
     }
     if (minAgeRestriction && typeof minAgeRestriction !== 'number'
-        || minAgeRestriction < 1
-        || minAgeRestriction > 18) {
+        || (typeof minAgeRestriction === 'number' && minAgeRestriction < 1
+        || typeof minAgeRestriction === 'number' && minAgeRestriction > 18)) {
         errorsMessages.push({
             "message": "Incorrect minAgeRestriction",
             "field": "minAgeRestriction"
@@ -219,7 +219,7 @@ const createVideosValidation2 = (
             canBeDownloaded: false,
             minAgeRestriction: null,
             createdAt: new Date().toISOString(),
-            publicationDate: new Date(Date.now() + 86400000).toISOString(),
+            publicationDate: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
             availableResolutions: availableResolutions
         }
         videosCatalog.push(newVideo)
