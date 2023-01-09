@@ -14,7 +14,7 @@ type videosTypes = {
     availableResolutions: availableResolutionsEnum[]
 }
 const availableResolutionsArray: Array<string> = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
-let videosCatalog: videosCatalogType = []
+export let videosCatalog: videosCatalogType = []
 
 export const videosRouter = Router()
 let errorsMessages: Array<any> = []
@@ -191,9 +191,3 @@ const updateVideosValidation = (
     })
 
 
-    export const testingRouter = Router()
-
-    testingRouter.delete('/all-data', (req: Request, res: Response) => {
-        videosCatalog = []
-        res.sendStatus(204)
-    })
