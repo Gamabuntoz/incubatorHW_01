@@ -31,17 +31,16 @@ let videosCatalog: videosCatalogType = [
 
 export const videosRouter = Router()
 let errorsMessages: Array<any> = []
-const updateVideosValidation = (
+
+
+const createVideosValidation = (
     title: string,
     author: string,
-    availableResolutions: Array<string>,
-    canBeDownloaded?: boolean,
-    minAgeRestriction?: number | null,
-    publicationDate?: string
+    availableResolutions: Array<string>
 ) => {
-    if (title.length > 40
-        || !title
+    if (!title
         || typeof title !== 'string'
+        || title.length > 40
     ) {
         errorsMessages.push({
             "message": "Incorrect title",
@@ -51,6 +50,42 @@ const updateVideosValidation = (
     if (author.length > 20
         || !author
         || typeof author !== 'string'
+    ) {
+        errorsMessages.push({
+            "message": "Incorrect author",
+            "field": "author"
+        })
+    }
+    if (availableResolutions.length > availableResolutionsArray.length
+        || availableResolutions.filter(resol => availableResolutionsArray.indexOf(resol) < 0).length > 0) {
+        errorsMessages.push({
+            "message": "Incorrect availableResolutions",
+            "field": "availableResolutions"
+        })
+
+    }
+    return
+}
+const updateVideosValidation = (
+    title: string,
+    author: string,
+    availableResolutions: Array<string>,
+    canBeDownloaded?: boolean,
+    minAgeRestriction?: number | null,
+    publicationDate?: string
+) => {
+    if (!title
+        || typeof title !== 'string'
+        || title.length > 40
+    ) {
+        errorsMessages.push({
+            "message": "Incorrect title",
+            "field": "title"
+        })
+    }
+    if (!author
+        || typeof author !== 'string'
+        || author.length > 20
     ) {
         errorsMessages.push({
             "message": "Incorrect author",
@@ -87,6 +122,7 @@ const updateVideosValidation = (
     }
     return
 }
+
 const updateVideosValidation2 = (
     author: string,
     availableResolutions: Array<string>,
@@ -133,39 +169,7 @@ const updateVideosValidation2 = (
     }
     return
 }
-const createVideosValidation = (
-    title: string,
-    author: string,
-    availableResolutions: Array<string>
-) => {
-    if (title.length > 40
-        || !title
-        || typeof title !== 'string'
-    ) {
-        errorsMessages.push({
-            "message": "Incorrect title",
-            "field": "title"
-        })
-    }
-    if (author.length > 20
-        || !author
-        || typeof author !== 'string'
-    ) {
-        errorsMessages.push({
-            "message": "Incorrect author",
-            "field": "author"
-        })
-    }
-    if (availableResolutions.length > availableResolutionsArray.length
-        || availableResolutions.filter(resol => availableResolutionsArray.indexOf(resol) < 0).length > 0) {
-        errorsMessages.push({
-            "message": "Incorrect availableResolutions",
-            "field": "availableResolutions"
-        })
 
-    }
-    return
-}
 const createVideosValidation2 = (
     author: string,
     availableResolutions: Array<string>,
@@ -198,14 +202,14 @@ const createVideosValidation2 = (
         const title = req.body.title
         const author = req.body.author
         const availableResolutions = req.body.availableResolutions
-        if (title === null) {
-            errorsMessages.push({
-                "message": "Incorrect title",
-                "field": "title"
-            })
-            createVideosValidation2(author, availableResolutions)
-            return res.status(400).send({errorsMessages})
-        }
+        // if (title === null) {
+        //     errorsMessages.push({
+        //         "message": "Incorrect title",
+        //         "field": "title"
+        //     })
+        //     createVideosValidation2(author, availableResolutions)
+        //     return res.status(400).send({errorsMessages})
+        // }
         createVideosValidation(title, author, availableResolutions)
 
         if (errorsMessages.length > 0) {
@@ -241,20 +245,25 @@ const createVideosValidation2 = (
         const canBeDownloaded = req.body.canBeDownloaded
         const minAgeRestriction = req.body.minAgeRestriction
         const publicationDate = req.body.publicationDate
-        if (title === null) {
-            errorsMessages.push({
-                "message": "Incorrect title",
-                "field": "title"
-            })
-            updateVideosValidation2(author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
-            return res.status(400).send({errorsMessages})
-        }
+        // if (title === null) {
+        //     errorsMessages.push({
+        //         "message": "Incorrect title",
+        //         "field": "title"
+        //     })
+        //     updateVideosValidation2(author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
+        //     return res.status(400).send({errorsMessages})
+        // }
         updateVideosValidation(title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate)
         if (errorsMessages.length > 0) {
             return res.status(400).send({errorsMessages})
         }
         let video = videosCatalog.find(v => v.id === +req.params.id)
-        if (video) {
+
+        if (!video) {
+            res.sendStatus(404)
+            return
+        }
+
             video.title = req.body.title
             video.author = req.body.author
             if (canBeDownloaded) {
@@ -270,18 +279,16 @@ const createVideosValidation2 = (
                 video.availableResolutions = req.body.availableResolutions
             }
             res.sendStatus(204)
-        } else {
-            res.sendStatus(404)
-        }
+
     })
     videosRouter.delete('/:id', (req: Request, res: Response) => {
         let video = videosCatalog.find(v => v.id === +req.params.id)
-        if (video) {
-            videosCatalog = videosCatalog.filter(f => f.id !== +req.params.id)
-            res.sendStatus(204)
-        } else {
+        if (!video) {
             res.sendStatus(404)
+            return
         }
+        videosCatalog = videosCatalog.filter(f => f.id !== +req.params.id)
+        res.sendStatus(204)
     })
 
 
